@@ -11,7 +11,7 @@ import (
 )
 
 const serverPort = 13500
-const msg = "hello from server"
+const msg = "hello from tcp server"
 
 var mu sync.Mutex
 

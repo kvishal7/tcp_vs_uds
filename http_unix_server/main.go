@@ -13,12 +13,16 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
-const socketName = "/tmp/demo.sock"
-const msg = "hello from server"
+const socketName = "/Users/test/testsockets/test.sock"
+const msg = "hello from unix server"
 
 var mu sync.Mutex
 
 func main() {
+
+	if _, err := os.Stat(socketName); err == nil {
+		os.Remove(socketName)
+	}
 
 	// Cleanup the sockfile.
 	c := make(chan os.Signal, 1)

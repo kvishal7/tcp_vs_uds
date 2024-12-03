@@ -9,11 +9,17 @@ import (
 	"syscall"
 )
 
-const msg = "hello from server"
+const msg = "hello from uds server"
+
+var s = "/Users/test/testsockets/test.sock"
 
 func main() {
+
+	if _, err := os.Stat(s); err == nil {
+		os.Remove(s)
+	}
 	// Create a Unix domain socket and listen for incoming connections.
-	socket, err := net.Listen("unix", "/tmp/echo.sock")
+	socket, err := net.Listen("unix", s)
 	if err != nil {
 		log.Fatal(err)
 	}
@@ -23,7 +29,7 @@ func main() {
 	signal.Notify(c, os.Interrupt, syscall.SIGTERM)
 	go func() {
 		<-c
-		os.Remove("/tmp/echo.sock")
+		os.Remove(s)
 		fmt.Printf("\nExiting...\n")
 		os.Exit(1)
 	}()
@@ -48,10 +54,10 @@ func main() {
 		// fmt.Println(string(buf))
 
 		// Echo the data back to the connection.
-		_, err = conn.Write([]byte(msg))
-		if err != nil {
-			log.Fatal(err)
-		}
+		// _, err = conn.Write([]byte(msg))
+		// if err != nil {
+		// 	log.Fatal(err)
+		// }
 		conn.Close()
 	}
 }

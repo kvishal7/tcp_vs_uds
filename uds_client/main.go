@@ -9,7 +9,8 @@ import (
 	"time"
 )
 
-const msg = "hello from client"
+const msg = "hello from uds client"
+var s = "/Users/test/testsockets/test.sock"
 
 var byteMsg = []byte(msg)
 
@@ -24,7 +25,7 @@ func main() {
 
 	for i := 0; i < 100000; i++ {
 		startTime := time.Now()
-		conn, err := net.Dial("unix", "/tmp/echo.sock")
+		conn, err := net.Dial("unix", s)
 		if err != nil {
 			log.Fatal(err)
 		}

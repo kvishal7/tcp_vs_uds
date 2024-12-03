@@ -3,13 +3,14 @@ package main
 import (
 	"context"
 	"fmt"
-	"io"
 	"net"
 	"net/http"
 	"time"
 )
 
-const serverPort = 13500
+const serverPort = 8081
+
+// const serverPort = 13500
 
 var msg = "hello from client"
 
@@ -18,7 +19,9 @@ var closeTime time.Duration
 var dialTime time.Duration
 
 var connStr = fmt.Sprintf("127.0.0.1:%d", serverPort)
-var connRoute = fmt.Sprintf("http://127.0.0.1:%d/cpu", serverPort)
+var connRoute = fmt.Sprintf("http://127.0.0.1:%d/", serverPort)
+
+// var connRoute = fmt.Sprintf("http://127.0.0.1:%d/cpu", serverPort)
 
 func main() {
 	// f, _ := os.Create("cpu.pprof")
@@ -48,11 +51,11 @@ func main() {
 		// msgReader := strings.NewReader(msg)
 		// Send a GET request to the server
 		startTime = time.Now()
-		// resp, err := client.Post(connRoute, "text/plain", msgReader)
+		// _, err = client.Post(connRoute, "text/plain", msgReader)
 		// if err != nil {
 		// 	panic(err)
 		// }
-		resp, err := client.Get(connRoute)
+		_, err = client.Get(connRoute)
 		if err != nil {
 			panic(err)
 		}
@@ -60,12 +63,12 @@ func main() {
 
 		// Read the response body
 		// body, err := io.ReadAll(resp.Body)
-		if resp.StatusCode != http.StatusAccepted {
-			panic("error response")
-		}
-		io.Copy(io.Discard, resp.Body)
-		// fmt.Println(string(body))
-		resp.Body.Close()
+		// if resp.StatusCode != http.StatusAccepted {
+		// 	panic("error response")
+		// }
+		// io.Copy(io.Discard, resp.Body)
+		// // fmt.Println(string(body))
+		// resp.Body.Close()
 
 		// Print the response body
 		// fmt.Println(string(body))
